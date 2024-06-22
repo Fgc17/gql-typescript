@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  app:
+    container_name: gql-tsquery
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    volumes:
+      - ../..:/workspaces:cached
+
+    command: sleep infinity

@@ -9,36 +9,22 @@ import {
   isNamedType,
   GraphQLField,
 } from "graphql";
-import { codegen } from "@graphql-codegen/core";
-import * as typescriptPlugin from "@graphql-codegen/typescript";
 import _ from "lodash";
 
-export const generator = async (schemaStr: string): Promise<string> => {
+export const generator = async (
+  schemaStr: string,
+  tsTypesStr: string
+): Promise<string> => {
   const schema: GraphQLSchema = buildSchema(schemaStr);
 
-  const output = await codegen({
-    documents: [],
-    config: {},
-    filename: "",
-    schema: parse(printSchema(schema)),
-    plugins: [
-      {
-        typescript: {},
-      },
-    ],
-    pluginMap: {
-      typescript: typescriptPlugin,
-    },
-  });
-
-  const typesMap = extractTypes(output);
+  const typesMap = extractTypes(tsTypesStr);
 
   const operationsInterface = generateOperationsInterface(schema, typesMap);
 
   const operationsConst = generateOperationsConst(schema);
 
   const types =
-    output +
+    tsTypesStr +
     "\n\n" +
     `export interface Operations ${JSON.stringify(operationsInterface, null, 2).replace(/["]/g, "")}\n` +
     `export const operations = ${JSON.stringify(operationsConst, null, 2)}`;
@@ -115,11 +101,13 @@ const getArgsType = (
 
   const typeMapKeys = Object.keys(typesMap);
 
-  const lcTypeMapKeys = typeMapKeys.map((key) => key.toLowerCase());
+  const lowercaseTypeMapKeys = typeMapKeys.map((key) => key.toLowerCase());
 
-  const lcTypeName = typeName.toLowerCase();
+  const lowercaseTypeName = typeName.toLowerCase();
 
-  const matchedTypeIndex = lcTypeMapKeys.findIndex((key) => key === lcTypeName);
+  const matchedTypeIndex = lowercaseTypeMapKeys.findIndex(
+    (key) => key === lowercaseTypeName
+  );
 
   return matchedTypeIndex !== -1
     ? typesMap[typeMapKeys[matchedTypeIndex]!]
