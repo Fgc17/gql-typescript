@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@ferstack/gql-tsquery",
+  "version": "0.0.1",
+  "description": "A query builder and generator for Apollo Client",
+  "author": "Fernando Coelho",
+  "repository": "https://github.com/Fgc17/apollo-query-builder",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "src/index.ts",
+  "bin": {
+    "gql-tsquery": "dist/cmd.js"
+  },
+  "dependencies": {
+    "@ferstack/generated": "2.0.0",
+    "@graphql-codegen/core": "^4.0.2",
+    "@graphql-codegen/typescript": "^4.0.7",
+    "chokidar": "3.5.3",
+    "glob": "^10.4.1",
+    "graphql": "16.8.2",
+    "graphql-tag": "^2.12.6",
+    "lodash": "4.17.21",
+    "tsx": "4.15.5"
+  },
+  "type": "module",
+  "devDependencies": {
+    "@changesets/cli": "2.26.2",
+    "@types/lodash": "^4.14.202",
+    "@types/node": "18.16.12",
+    "graphql-request": "7.0.1",
+    "prettier": "^3.2.2",
+    "typescript": "5.3.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "pnpm@8.14.1",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "test": "tsx src/cli/cmd.ts ./test/schema.graphql",
+    "reset": "tsx src/cli/cmd.ts ./test/null.schema.graphql"
+  }
+}

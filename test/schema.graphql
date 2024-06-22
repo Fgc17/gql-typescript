@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Subscription {
+  id: String!
+  status: String!
+  first_payment: DateTime!
+  next_payment: DateTime!
+  user: User!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type User {
+  id: String!
+  cpf: String!
+  phone_number: String!
+  full_name: String!
+  first_name: String!
+  email: String!
+  birth_date: DateTime!
+  password: String!
+  gender: String!
+  info: UserInfo
+  subscription: Subscription
+}
+
+type UserInfo {
+  id: String!
+  user: User!
+  marital_status: String!
+  education_level: String!
+  cep: String!
+  profession: String!
+  instagram: String!
+}
+
+type CreateUserReturn {
+  created_at: DateTime!
+}
+
+type Query {
+  getUser(id: String!): User!
+  getUsers: [User!]!
+}
+
+type Mutation {
+  createUser(
+    username: String!
+    email: String!
+    password: String!
+  ): CreateUserReturn!
+}
