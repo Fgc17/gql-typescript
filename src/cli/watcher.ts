@@ -1,7 +1,5 @@
-import fs from "fs";
 import chokidar from "chokidar";
 import axios from "axios";
-import { promisify } from "util";
 import { readFile } from "fs/promises";
 import { getIntrospectionQuery } from "graphql";
 
@@ -54,7 +52,7 @@ export const watchSchema = (
     };
 
     fetchAndUpdate();
-    setInterval(fetchAndUpdate, 1500); // Check every 10 seconds
+    setInterval(fetchAndUpdate, 1500);
   } else {
     const watcher = chokidar.watch(pattern, { persistent: true });
 
