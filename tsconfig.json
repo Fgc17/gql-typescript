@@ -15,8 +15,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022",
+    "target": "ES2022"
   },
-  "include": ["src/cli/generator.ts", "src/cli/cmd.ts"],
-  "exclude": ["node_modules", "dist"],
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }
