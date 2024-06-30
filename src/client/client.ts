@@ -1,6 +1,9 @@
 import gqlTag from "graphql-tag";
-import { Operations, operations } from "@ferstack/generated/gql-tsquery/types";
-import { Defined, MapFields, RecursiveBoolean, UnionToObject } from "./types";
+import {
+  Operations,
+  operations,
+} from "@ferstack/generated/gql-tsquery/types.js";
+import { Defined, MapFields, SelectQuery, UnionToObject } from "./types.js";
 import _ from "lodash";
 import { DocumentNode } from "graphql";
 
@@ -29,28 +32,25 @@ export type GQLSelect<
     "selectType"
   > = GroupOperations<TOperationType, "selectType">,
 > = {
-  [K in keyof TOperations]: RecursiveBoolean<TOperations[K]>;
+  [K in keyof TOperations]?: SelectQuery<TOperations[K]>;
 };
 
 export type GQLRequest<
   TOperationType extends OperationType,
-  TSelect extends Partial<GQLSelect<TOperationType>>,
+  TSelect extends GQLSelect<TOperationType>,
 > = {
   documentNode: DocumentNode;
-  variables: (variables: VariablesInputType<TOperationType, TSelect>) => any;
+  variables: (variables: VariablesInputType<TOperationType>) => any;
   _returnType: Defined<
     MapFields<TSelect, GroupOperations<TOperationType, "returnType">>
   >;
-  _variablesType: VariablesInputType<TOperationType, TSelect>;
+  _variablesType: VariablesInputType<TOperationType>;
 };
 
-export const gql = <
-  TOperationType extends OperationType,
-  TSelect extends GQLSelect<TOperationType>,
->(
+export const gql = <TOperationType extends OperationType>(
   operationType: TOperationType,
-  select: TSelect
-): GQLRequest<TOperationType, TSelect> => {
+  select: GQLSelect<TOperationType>
+) => {
   const buildFields = (fields: any): string => {
     return Object.keys(fields)
       .map((key) => {
@@ -98,7 +98,9 @@ export const gql = <
       ${operationData
         .map(
           (op) => `
-        ${op.name}${op.variableAssignments ? `(${op.variableAssignments})` : ""} {
+        ${op.name}${
+          op.variableAssignments ? `(${op.variableAssignments})` : ""
+        } {
           ${op.fields}
         }
       `
@@ -107,8 +109,6 @@ export const gql = <
     }
   `;
 
-  console.log(queryString);
-
   const documentNode = gqlTag(queryString);
 
   return {
@@ -116,29 +116,21 @@ export const gql = <
     variables,
     _variablesType: null as any,
     _returnType: null as any,
-  };
+  } as any as GQLRequest<TOperationType, typeof select>;
 };
 
 export type VariablesInputType<
   TOperationType extends OperationType,
-  TSelect extends Partial<GQLSelect<TOperationType>> = Partial<
-    GQLSelect<TOperationType>
-  >,
   TOperationByVariables extends GroupOperations<
     TOperationType,
     "variablesType"
   > = GroupOperations<TOperationType, "variablesType">,
 > = {
-  [k in keyof TOperationByVariables & keyof TSelect]?: Defined<
-    TOperationByVariables[k]
-  >;
+  [k in keyof TOperationByVariables]?: Defined<TOperationByVariables[k]>;
 };
 
-export const variables = <
-  TOperationType extends OperationType,
-  TSelect extends Partial<GQLSelect<TOperationType>>,
->(
-  variables: VariablesInputType<TOperationType, TSelect>
+export const variables = <TOperationType extends OperationType>(
+  variables: VariablesInputType<TOperationType>
 ) =>
   Object.entries(variables).reduce((acc: any, [key, value]: any) => {
     const valueEntries = Object.entries(value);
