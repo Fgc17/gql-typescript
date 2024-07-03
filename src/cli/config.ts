@@ -1,7 +1,7 @@
 interface Config {
   watch: boolean;
   schema: string;
-  vscodeRemote?: string;
+  editorRemote?: string;
 }
 
 export class CLIConfig {
@@ -10,8 +10,8 @@ export class CLIConfig {
   constructor(config: Config) {
     this.config = config;
 
-    if (!this.config.vscodeRemote)
-      this.config.vscodeRemote = "ws://localhost:3710";
+    if (!this.config.editorRemote)
+      this.config.editorRemote = "ws://localhost:3710";
   }
 
   get watch() {
@@ -22,7 +22,7 @@ export class CLIConfig {
     return this.config.schema;
   }
 
-  get vscodeRemote() {
-    return this.config.vscodeRemote!;
+  get editorRemote() {
+    return this.config.editorRemote!;
   }
 }
