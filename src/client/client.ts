@@ -49,7 +49,7 @@ export type GQLVariables<
     "variablesType"
   > = GroupOperations<TOperationType, "variablesType">,
 > = {
-  [k in keyof TOperationByVariables & keyof TOperations]: Defined<
+  [k in keyof TOperationByVariables & keyof TOperations]?: Defined<
     TOperationByVariables[k]
   >;
 };
