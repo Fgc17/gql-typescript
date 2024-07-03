@@ -2,7 +2,7 @@ import gqlTag from "graphql-tag";
 import {
   Operations,
   operations,
-} from "@ferstack/generated/gql-tsquery/types.js";
+} from "@ferstack/generated/gql-tsquery/types";
 import {
   Defined,
   MakeOptional,
@@ -114,9 +114,7 @@ export const gql = <
     .join(", ");
 
   const queryString = `
-    ${operationType as string} GraphqlQuery(${
-      variableDefinitionsString ? `${variableDefinitionsString}` : ""
-    }) {
+    ${operationType as string} GraphqlQuery${variableDefinitionsString ? `(${variableDefinitionsString})` : "" } {
       ${operationData
         .map(
           (op) => `
