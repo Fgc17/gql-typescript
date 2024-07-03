@@ -1,5 +1,31 @@
 export type Defined<T> = T extends undefined | null ? never : T;
 
+export type RecursivePartial<T> = {
+  [P in keyof T]?: T[P] extends (infer U)[]
+    ? RecursivePartial<U>[]
+    : T[P] extends Scalar
+      ? RecursivePartial<T[P]>
+      : T[P];
+};
+
+export type RecursivePick<T, K extends keyof T> = {
+  [P in K]: T[P] extends (infer U)[]
+    ? RecursivePick<U, keyof U>[]
+    : T[P] extends Scalar
+      ? T[P]
+      : RecursivePick<T[P], keyof T[P]>;
+};
+
+export type StrictPartial<Partial> = RecursivePartial<Partial> &
+  RecursivePick<Partial, keyof Partial>;
+
+export type PreserveOptional<T> = {
+  [K in keyof T]-?: undefined extends T[K] ? K : never;
+}[keyof T];
+
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
+  Partial<Pick<T, K>>;
+
 export type Scalar =
   | boolean
   | number
@@ -24,8 +50,9 @@ export type EntityKey<T = unknown> = string &
 export type SelectQuery<T> = {
   -readonly [K in EntityKey<T>]?: T[K] extends Scalar
     ? boolean
-    : SelectQuery<T[K]>;
+    : SelectQuery<Defined<T[K]>>;
 };
+
 export type MapFields<BooleanType, ActualType> =
   ActualType extends Array<infer U>
     ? Array<MapFields<BooleanType, U>>
@@ -33,9 +60,9 @@ export type MapFields<BooleanType, ActualType> =
         [K in keyof BooleanType]: K extends keyof Defined<ActualType>
           ? BooleanType[K] extends true
             ? Defined<ActualType>[K]
-            : BooleanType[K] extends object
-              ? MapFields<BooleanType[K], Defined<ActualType>[K]>
-              : never
+            : BooleanType[K] extends Scalar
+              ? Defined<ActualType>[K]
+              : MapFields<BooleanType[K], Defined<ActualType>[K]>
           : never;
       };
 

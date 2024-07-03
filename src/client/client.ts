@@ -3,7 +3,15 @@ import {
   Operations,
   operations,
 } from "@ferstack/generated/gql-tsquery/types.js";
-import { Defined, MapFields, SelectQuery, UnionToObject } from "./types.js";
+import {
+  Defined,
+  MakeOptional,
+  MapFields,
+  PreserveOptional,
+  SelectQuery,
+  StrictPartial,
+  UnionToObject,
+} from "./types.js";
 import _ from "lodash";
 import { DocumentNode } from "graphql";
 
@@ -21,7 +29,7 @@ export type GroupOperations<
   [P in keyof TOperations]: TOperations[P] extends {
     [k in TBy]: infer R;
   }
-    ? R
+    ? MakeOptional<R, PreserveOptional<R>>
     : never;
 };
 
@@ -31,8 +39,19 @@ export type GQLSelect<
     TOperationType,
     "selectType"
   > = GroupOperations<TOperationType, "selectType">,
+> = SelectQuery<TOperations>;
+
+export type GQLVariables<
+  TOperationType extends OperationType,
+  TOperations extends GQLSelect<TOperationType>,
+  TOperationByVariables extends GroupOperations<
+    TOperationType,
+    "variablesType"
+  > = GroupOperations<TOperationType, "variablesType">,
 > = {
-  [K in keyof TOperations]?: SelectQuery<TOperations[K]>;
+  [k in keyof TOperationByVariables & keyof TOperations]: Defined<
+    TOperationByVariables[k]
+  >;
 };
 
 export type GQLRequest<
@@ -40,17 +59,20 @@ export type GQLRequest<
   TSelect extends GQLSelect<TOperationType>,
 > = {
   documentNode: DocumentNode;
-  variables: (variables: VariablesInputType<TOperationType>) => any;
+  variables: (variables: GQLVariables<TOperationType, TSelect>) => any;
   _returnType: Defined<
     MapFields<TSelect, GroupOperations<TOperationType, "returnType">>
   >;
-  _variablesType: VariablesInputType<TOperationType>;
+  _variablesType: GQLVariables<TOperationType, TSelect>;
 };
 
-export const gql = <TOperationType extends OperationType>(
+export const gql = <
+  TOperationType extends OperationType,
+  TSelect extends GQLSelect<TOperationType>,
+>(
   operationType: TOperationType,
-  select: GQLSelect<TOperationType>
-) => {
+  select: StrictPartial<TSelect>
+): GQLRequest<TOperationType, TSelect> => {
   const buildFields = (fields: any): string => {
     return Object.keys(fields)
       .map((key) => {
@@ -116,21 +138,14 @@ export const gql = <TOperationType extends OperationType>(
     variables,
     _variablesType: null as any,
     _returnType: null as any,
-  } as any as GQLRequest<TOperationType, typeof select>;
+  };
 };
 
-export type VariablesInputType<
+export const variables = <
   TOperationType extends OperationType,
-  TOperationByVariables extends GroupOperations<
-    TOperationType,
-    "variablesType"
-  > = GroupOperations<TOperationType, "variablesType">,
-> = {
-  [k in keyof TOperationByVariables]?: Defined<TOperationByVariables[k]>;
-};
-
-export const variables = <TOperationType extends OperationType>(
-  variables: VariablesInputType<TOperationType>
+  TSelect extends GQLSelect<TOperationType>,
+>(
+  variables: GQLVariables<TOperationType, TSelect>
 ) =>
   Object.entries(variables).reduce((acc: any, [key, value]: any) => {
     const valueEntries = Object.entries(value);
