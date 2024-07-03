@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package",
   "name": "@ferstack/gql-typescript",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "An agnostic GraphQL query builder bundled with a generator",
   "author": "Fernando Coelho",
   "repository": "https://github.com/Fgc17/apollo-query-builder",
@@ -28,10 +28,10 @@
     "gql-typescript": "dist/cli/cmd/cmd.js"
   },
   "scripts": {
-    "prepublishOnly": "tsc",
     "dev": "tsc --watch",
     "build": "tsc",
-    "test": "tsx src/cli/cmd/cmd.ts --config ./test/gql-tsquery.config.js"
+    "test": "tsx src/cli/cmd/cmd.ts --config ./test/gql-tsquery.config.js",
+    "npm-publish": "rm -rf dist && tsc && pnpm changeset"
   },
   "dependencies": {
     "@ferstack/generated": "2.0.0",
