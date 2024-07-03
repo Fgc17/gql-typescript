@@ -70,7 +70,7 @@ export default config;
 
 ### Execute the Generator with the Frontend Server
 
-```json
+```ts
 // apps/frontend/package.json
 {
   "name": "web",
