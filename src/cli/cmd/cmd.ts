@@ -58,7 +58,7 @@ import(path.join(cwd(), program.opts().config ?? "gql-tsquery.config.js")).then(
         })
         .then((schema) =>
           fs.writeFile(generatedTypesFolder + "/types.ts", schema, () =>
-            restartTsServer(config.vscodeRemote)
+            restartTsServer(config.editorRemote)
           )
         );
 
