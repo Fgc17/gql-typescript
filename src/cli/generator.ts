@@ -1,7 +1,5 @@
 import {
   buildSchema,
-  parse,
-  printSchema,
   GraphQLSchema,
   getNamedType as gqlGetNamedType,
   isNonNullType,
@@ -9,7 +7,6 @@ import {
   isNamedType,
   GraphQLField,
 } from "graphql";
-import _ from "lodash";
 
 export const generator = async (
   schemaStr: string,
