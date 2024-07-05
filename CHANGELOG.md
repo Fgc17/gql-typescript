@@ -1,5 +1,11 @@
 # @ferstack/gql-typescript
 
+## 0.3.0
+
+### Minor Changes
+
+- Strongly typed query arrays
+
 ## 0.2.0
 
 ### Minor Changes
