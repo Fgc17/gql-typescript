@@ -84,44 +84,47 @@ export default config;
 
 `gql-typescript` offers just a query-builder, so you'll need a client to execute the query.
 
-Here's an implementation with NextJS Apollo Client:
+Here's an implementation with `SWR` and `graphql-request` for `NextJS`:
 
 ```typescript
-// apps/frontend/lib/apollo.ts
+// apps/frontend/lib/swr-gql.ts
+import { GQLRequest } from "@ferstack/gql-typescript";
+import { DocumentNode } from "graphql";
+import { request } from "graphql-request";
+import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 
-import { HttpLink, OperationVariables, QueryOptions } from "@apollo/client";
-import {
-  registerApolloClient,
-  ApolloClient,
-  InMemoryCache,
-} from "@apollo/experimental-nextjs-app-support";
-import { variables, GQLRequest } from "@ferstack/gql-typescript";
+function fetcher(query: DocumentNode, variables: Record<string, any> = {}) {
+  return request("http://localhost:5000/graphql", query, variables);
+}
 
-export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
-  return new ApolloClient({
-    cache: new InMemoryCache(),
-    link: new HttpLink({
-      uri: process.env.GQL_URL, // Don't forget the ENV variable
-    }),
-  });
-});
-
-export function useQuery<
-  TRequest extends GQLRequest<any, any>,
-  TVariables extends OperationVariables,
->(
-  options: Omit<QueryOptions<TVariables>, "query" | "variables"> & {
-    request: TRequest;
-    variables?: TRequest["_variablesType"];
-  }
+export function useQuery<TRequest extends GQLRequest<any, any>>(
+  request: TRequest
 ) {
-  const { request, ...rest } = options;
+  const { mutate, ...rest } = useSWR<TRequest["_returnType"], any, any>(
+    request.documentNode,
+    (document: DocumentNode, { arg }: { arg: TRequest["_variablesType"] }) =>
+      fetcher(document, request.variables(arg)) as any
+  );
 
-  return getClient().query<TRequest["_returnType"]>({
-    ...rest,
-    query: request.documentNode,
-    ...(options.variables && { variables: variables(options.variables) }),
-  });
+  return rest;
+}
+
+export function useMutation<TRequest extends GQLRequest<any, any>>(
+  request: TRequest
+) {
+  return useSWRMutation<
+    TRequest["_returnType"],
+    any,
+    DocumentNode,
+    TRequest["_variablesType"]
+  >(
+    request.documentNode,
+    (document, { arg }) => fetcher(document, request.variables(arg)) as any,
+    {
+      populateCache: false,
+    }
+  );
 }
 ```
 
@@ -132,27 +135,36 @@ export function useQuery<
 
 import { useState } from "react";
 import { gql } from "@ferstack/gql-typescript";
-import { useQuery } from 'lib/apollo'
+import { useQuery } from 'lib/swr-gql'
 
 export function AddPhysicalEval() {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleOpen = () => setIsOpen(!isOpen);
 
-  const request = gql("mutation", {
+  const mutation = gql("mutation", {
     createPhysicalEvaluation: {
-      height: true,
-      weight: true,
+      data: {
+        height: true,
+        weight: true,
+      },
+      errors: {
+        message: true,
+        path: true,
+      },
     },
   });
 
-  const { data } = useQuery({
-    request,
-  })
+  const { data, trigger } = useMutation(mutation);
+
 
   const entry = data[
     // full autocomplete on response
   ]
+
+  trigger({
+    // this will also show all args you declared
+  })
 
   return <Fragment />;
 }
