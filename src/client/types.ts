@@ -1,3 +1,6 @@
+type Maybe<T> = T | null;
+type IsMaybe<T> = null extends T ? true : false;
+
 export type Defined<T> = T extends undefined | null ? never : T;
 
 export type RecursivePartial<T> = {
@@ -59,7 +62,9 @@ export type MapFields<BooleanType, ActualType> = RemoveEmptyObjects<
         [K in keyof BooleanType &
           keyof ActualType]: BooleanType[K] extends Scalar
           ? ActualType[K]
-          : MapFields<BooleanType[K], ActualType[K]>;
+          : IsMaybe<ActualType[K]> extends true
+            ? Maybe<MapFields<BooleanType[K], ActualType[K]>>
+            : MapFields<BooleanType[K], ActualType[K]>;
       }
 >;
 
