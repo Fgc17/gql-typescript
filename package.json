@@ -31,7 +31,7 @@
     "dev": "tsc --watch",
     "build": "tsc",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "test": "tsx src/cli/cmd/cmd.ts --config ./test/gql-tsquery.config.js",
+    "generate-types": "tsx src/cli/cmd/cmd.ts --config ./test/gql-tsquery.config.js",
     "change-version": "rm -rf dist && tsc && pnpm changeset",
     "publish-version": "rm -rf dist && tsc && pnpm changeset && pnpm changeset version && pnpm changeset publish"
   },
