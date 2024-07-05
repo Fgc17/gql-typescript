@@ -36,35 +36,32 @@ export type Scalar =
   | RegExp
   | Uint8Array;
 
-export type CleanKeys<T, K extends keyof T> = T[K] & {} extends Function
-  ? never
-  : K extends symbol
-    ? never
-    : K;
-
-export type EntityKey<T = unknown> = string &
-  keyof {
-    [K in keyof T as CleanKeys<T, K>]?: unknown;
-  };
-
 export type SelectQuery<T> = {
-  -readonly [K in EntityKey<T>]?: T[K] extends Scalar
+  readonly [K in keyof T]?: Defined<T[K]> extends Scalar
     ? boolean
-    : SelectQuery<Defined<T[K]>>;
+    : Defined<T[K]> extends Array<infer U>
+      ? SelectQuery<U>
+      : SelectQuery<T[K]>;
 };
 
-export type MapFields<BooleanType, ActualType> =
+export type IsEmptyObject<T> = keyof T extends never ? true : false;
+
+export type RemoveEmptyObjects<T> = T extends any
+  ? IsEmptyObject<T> extends true
+    ? never
+    : T
+  : never;
+
+export type MapFields<BooleanType, ActualType> = RemoveEmptyObjects<
   ActualType extends Array<infer U>
     ? Array<MapFields<BooleanType, U>>
     : {
-        [K in keyof BooleanType]: K extends keyof Defined<ActualType>
-          ? BooleanType[K] extends true
-            ? Defined<ActualType>[K]
-            : BooleanType[K] extends Scalar
-              ? Defined<ActualType>[K]
-              : MapFields<BooleanType[K], Defined<ActualType>[K]>
-          : never;
-      };
+        [K in keyof BooleanType &
+          keyof ActualType]: BooleanType[K] extends Scalar
+          ? ActualType[K]
+          : MapFields<BooleanType[K], ActualType[K]>;
+      }
+>;
 
 export type KeysOfUnion<T> = T extends T ? keyof T : never;
 
