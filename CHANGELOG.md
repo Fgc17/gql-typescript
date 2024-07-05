@@ -1,5 +1,11 @@
 # @ferstack/gql-typescript
 
+## 0.4.0
+
+### Minor Changes
+
+- Strictly typed Maybe in response
+
 ## 0.3.0
 
 ### Minor Changes
