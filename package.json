@@ -31,12 +31,12 @@
     "dev": "tsc --watch",
     "build": "tsc",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "generate-types": "tsx src/cli/cmd/cmd.ts --config ./test/gql-typescript.config.js",
+    "playground:generate-types": "tsx src/cli/cmd/cmd.ts --config ./playground/gql-typescript.config.js",
     "change-version": "rm -rf dist && tsc && pnpm changeset",
     "publish-version": "rm -rf dist && tsc && pnpm changeset && pnpm changeset version && pnpm changeset publish"
   },
   "dependencies": {
-    "@ferstack/generated": "2.0.3",
+    "@ferstack/generated": "2.0.4",
     "@graphql-codegen/cli": "5.0.2",
     "@graphql-codegen/schema-ast": "^4.0.2",
     "@graphql-codegen/typescript": "^4.0.7",
