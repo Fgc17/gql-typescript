@@ -1,5 +1,17 @@
 # @ferstack/gql-typescript
 
+## 0.5.0
+
+### Minor Changes
+
+- fix: updated "tsquery" mentions to "typescript"
+
+## 0.4.1
+
+### Patch Changes
+
+- fix: wrong generated types folder
+
 ## 0.4.0
 
 ### Minor Changes
