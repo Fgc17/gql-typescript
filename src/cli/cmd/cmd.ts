@@ -11,14 +11,14 @@ import { generatedTypesFolder, restartTsServer } from "./utils.js";
 import * as logging from "./logging.js";
 
 program
-  .name("gql-tsquery")
+  .name("gql-typescript")
   .description("Generate typescript typesafe queries from a graphql schema");
 
 program.option("--config <type>", "config path");
 
 program.parse();
 
-import(path.join(cwd(), program.opts().config ?? "gql-tsquery.config.js")).then(
+import(path.join(cwd(), program.opts().config ?? "gql-typescript.config.js")).then(
   (file: { default: { config: CLIConfig } }) => {
     const config = file.default.config;
 

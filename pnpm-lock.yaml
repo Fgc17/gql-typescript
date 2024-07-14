@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ferstack/generated':
-        specifier: 2.0.0
-        version: 2.0.0
+        specifier: 2.0.3
+        version: 2.0.3
       '@graphql-codegen/cli':
         specifier: 5.0.2
         version: 5.0.2(@parcel/watcher@2.4.1)(@types/node@18.16.12)(enquirer@2.4.1)(graphql@16.8.2)(typescript@5.3.3)
@@ -638,8 +638,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@ferstack/generated@2.0.0':
-    resolution: {integrity: sha512-Wt1ulojKD1t1TIT1ZOXBfePv6QZQZt5stvYQSiEhpYZij6iJ+R92vIDdCvN/ZPfFQDq72Vx84PEBHGj8QTAI0g==}
+  '@ferstack/generated@2.0.3':
+    resolution: {integrity: sha512-Z1NvViglVNymYfQPzf25DwkuqH1Nno59sYAStMQO3xWKLATWrqbACY0uq4pFdod1vUCnLoogJX/YxYePwUUDzg==}
 
   '@graphql-codegen/add@5.0.3':
     resolution: {integrity: sha512-SxXPmramkth8XtBlAHu4H4jYcYXM/o3p01+psU+0NADQowA8jtYkK6MW5rV6T+CxkEaNZItfSmZRPgIuypcqnA==}
@@ -3807,7 +3807,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@ferstack/generated@2.0.0': {}
+  '@ferstack/generated@2.0.3': {}
 
   '@graphql-codegen/add@5.0.3(graphql@16.8.2)':
     dependencies:

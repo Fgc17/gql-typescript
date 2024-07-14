@@ -1,7 +1,7 @@
 export const generatedTypes = () => {
-  console.log("🌐 gql-tsquery: ✓ Generated Types.");
+  console.log("🌐 gql-typescript: ✓ Generated Types.");
 };
 
 export const watching = () => {
-  console.log("🌐 gql-tsquery: ✓ Watching for changes...");
+  console.log("🌐 gql-typescript: ✓ Watching for changes...");
 };

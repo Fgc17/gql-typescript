@@ -1,5 +1,5 @@
 import gqlTag from "graphql-tag";
-import { Operations, operations } from "@ferstack/generated/gql-tsquery/types";
+import { Operations, operations } from "@ferstack/generated/gql-typescript";
 import {
   Defined,
   MakeOptional,
