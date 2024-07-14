@@ -63,13 +63,13 @@ export type GQLRequest<
   _variablesType: GQLVariables<TOperationType, TSelect>;
 };
 
-export const gql = <
+export function gql<
   TOperationType extends OperationType,
   TSelect extends GQLSelect<TOperationType>,
 >(
   operationType: TOperationType,
   select: StrictPartial<TSelect>
-): GQLRequest<TOperationType, TSelect> => {
+): GQLRequest<TOperationType, TSelect> {
   const buildFields = (fields: any): string => {
     return Object.keys(fields)
       .map((key) => {
@@ -134,15 +134,13 @@ export const gql = <
     _variablesType: null as any,
     _returnType: null as any,
   };
-};
+}
 
-export const variables = <
+export function variables<
   TOperationType extends OperationType,
   TSelect extends GQLSelect<TOperationType>,
->(
-  variables: GQLVariables<TOperationType, TSelect>
-) =>
-  Object.entries(variables).reduce((acc: any, [key, value]: any) => {
+>(variables: GQLVariables<TOperationType, TSelect>) {
+  return Object.entries(variables).reduce((acc: any, [key, value]: any) => {
     const valueEntries = Object.entries(value);
 
     for (const [valueKey, valueValue] of valueEntries) {
@@ -151,3 +149,4 @@ export const variables = <
 
     return acc;
   }, {});
+}
