@@ -1,5 +1,11 @@
 # @ferstack/gql-typescript
 
+## 0.5.4
+
+### Patch Changes
+
+- update dependencies
+
 ## 0.5.3
 
 ### Patch Changes

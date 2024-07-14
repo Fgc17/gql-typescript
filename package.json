@@ -1,7 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/package",
   "name": "@ferstack/gql-typescript",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "An agnostic GraphQL query builder bundled with a generator",
   "author": "Fernando Coelho",
   "repository": "https://github.com/Fgc17/apollo-query-builder",
@@ -36,7 +36,7 @@
     "publish-version": "pnpm build && pnpm changeset && pnpm changeset version && pnpm changeset publish"
   },
   "dependencies": {
-    "@ferstack/generated": "2.0.6",
+    "@ferstack/generated": "2.0.8",
     "@graphql-codegen/cli": "5.0.2",
     "@graphql-codegen/schema-ast": "^4.0.2",
     "@graphql-codegen/typescript": "^4.0.7",
