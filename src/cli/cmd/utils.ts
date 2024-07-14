@@ -7,7 +7,7 @@ export const generatedTypesFolder = path.join(
   "node_modules",
   "@ferstack",
   "generated",
-  "gql-tsquery"
+  "gql-typescript"
 );
 
 export function restartTsServer(vscodeRemote: string) {
