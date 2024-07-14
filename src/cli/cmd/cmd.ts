@@ -18,61 +18,62 @@ program.option("--config <type>", "config path");
 
 program.parse();
 
-import(path.join(cwd(), program.opts().config ?? "gql-typescript.config.js")).then(
-  (file: { default: { config: CLIConfig } }) => {
-    const config = file.default.config;
+import(
+  path.join(cwd(), program.opts().config ?? "gql-typescript.config.js")
+).then((file: { default: { config: CLIConfig } }) => {
+  const config = file.default.config;
 
-    const cmd = () =>
-      generate(
-        {
-          schema: config.schema,
-          generates: {
-            [generatedTypesFolder + "/temp/types.ts"]: {
-              plugins: ["typescript"],
-              config: {
-                scalars: {
-                  DateTime: "string",
-                },
+  const cmd = () =>
+    generate(
+      {
+        schema: config.schema,
+        generates: {
+          [generatedTypesFolder + "/temp/types.ts"]: {
+            plugins: ["typescript"],
+            config: {
+              scalars: {
+                DateTime: "string",
               },
             },
-            [generatedTypesFolder + "/temp/schema.gql"]: {
-              plugins: ["schema-ast"],
-            },
           },
-          debug: false,
-          silent: true,
-          verbose: false,
-          errorsOnly: true,
+          [generatedTypesFolder + "/temp/schema.gql"]: {
+            plugins: ["schema-ast"],
+          },
         },
-        false
+        debug: false,
+        silent: true,
+        verbose: false,
+        errorsOnly: true,
+      },
+      false
+    )
+      .then((files: Array<{ filename: string; content: string }>) => {
+        const endsWith = (filename: string) =>
+          files.find((file) => file.filename.endsWith(filename))!;
+
+        const schema = endsWith("schema.gql").content!;
+
+        const tsTypes = endsWith("types.ts").content!;
+
+        return generator(schema, tsTypes);
+      })
+      .then((schema) =>
+        fs.writeFileSync(generatedTypesFolder + "/types.ts", schema)
       )
-        .then((files: Array<{ filename: string; content: string }>) => {
-          const endsWith = (filename: string) =>
-            files.find((file) => file.filename.endsWith(filename))!;
+      .then(() => restartTsServer(config.editorRemote));
 
-          const schema = endsWith("schema.gql").content!;
+  const shouldWatch = config.watch;
 
-          const tsTypes = endsWith("types.ts").content!;
+  cmd()
+    .then(() => {
+      if (!shouldWatch) {
+        logging.generatedTypes();
+        process.exit(0);
+      }
 
-          return generator(schema, tsTypes);
-        })
-        .then((schema) =>
-          fs.writeFile(generatedTypesFolder + "/types.ts", schema, () =>
-            restartTsServer(config.editorRemote)
-          )
-        );
+      logging.watching();
 
-    const shouldWatch = config.watch;
-
-    cmd();
-
-    if (!shouldWatch) {
-      logging.generatedTypes();
-      process.exit(0);
-    }
-
-    logging.watching();
-
-    watchSchema(config.schema, cmd);
-  }
-);
+      watchSchema(config.schema, cmd);
+    })
+    .catch(console.error);
+});
