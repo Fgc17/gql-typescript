@@ -24,23 +24,52 @@ type User {
   email: String!
   birth_date: DateTime!
   password: String!
-  gender: String!
+  gender: gender!
   info: UserInfo
   subscription: Subscription
+}
+
+enum gender {
+  MALE
+  FEMALE
 }
 
 type UserInfo {
   id: String!
   user: User!
   marital_status: String!
-  education_level: String!
+  education_level: education_level!
   cep: String!
   profession: String!
   instagram: String!
 }
 
+enum education_level {
+  FUNDAMENTAL
+  MEDIO
+  SUPERIOR
+  POS_GRADUACAO
+  MESTRADO
+  DOUTORADO
+}
+
 type CreateUserReturn {
   created_at: DateTime!
+}
+
+type PhysicalEvaluation {
+  height: Float!
+  weight: Float!
+}
+
+type ResponseError {
+  message: String!
+  path: String!
+}
+
+type CreatePhysicalEvaluationResponse {
+  data: PhysicalEvaluation
+  errors: [ResponseError!]
 }
 
 type Query {
@@ -49,9 +78,6 @@ type Query {
 }
 
 type Mutation {
-  createUser(
-    username: String!
-    email: String!
-    password: String!
-  ): CreateUserReturn!
+  createUser(username: String!, email: String!, password: String!): CreateUserReturn!
+  createPhysicalEvaluation(height: Float!, weight: Float!): CreatePhysicalEvaluationResponse!
 }
