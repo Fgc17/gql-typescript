@@ -1,5 +1,11 @@
 # @ferstack/gql-typescript
 
+## 0.5.3
+
+### Patch Changes
+
+- fix: const function declaration was causing tsc to expand keyof type
+
 ## 0.5.2
 
 ### Patch Changes
