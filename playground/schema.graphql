@@ -60,6 +60,7 @@ type CreateUserReturn {
 type PhysicalEvaluation {
   height: Float!
   weight: Float!
+  imc: Float
 }
 
 type ResponseError {
@@ -78,6 +79,13 @@ type Query {
 }
 
 type Mutation {
-  createUser(username: String!, email: String!, password: String!): CreateUserReturn!
-  createPhysicalEvaluation(height: Float!, weight: Float!): CreatePhysicalEvaluationResponse!
+  createUser(
+    username: String!
+    email: String!
+    password: String!
+  ): CreateUserReturn!
+  createPhysicalEvaluation(
+    height: Float!
+    weight: Float!
+  ): CreatePhysicalEvaluationResponse!
 }
