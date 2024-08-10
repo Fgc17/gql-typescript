@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@ferstack/generated':
-        specifier: 2.0.6
-        version: 2.0.6
+        specifier: 2.0.9
+        version: 2.0.9
       '@graphql-codegen/cli':
         specifier: 5.0.2
         version: 5.0.2(@parcel/watcher@2.4.1)(@types/node@18.16.12)(enquirer@2.4.1)(graphql@16.8.2)(typescript@5.3.3)
@@ -38,9 +38,6 @@ importers:
       graphql-tag:
         specifier: ^2.12.6
         version: 2.12.6(graphql@16.8.2)
-      lodash:
-        specifier: 4.17.21
-        version: 4.17.21
       ws:
         specifier: ^8.17.1
         version: 8.17.1
@@ -48,9 +45,6 @@ importers:
       '@changesets/cli':
         specifier: 2.26.2
         version: 2.26.2
-      '@types/lodash':
-        specifier: ^4.14.202
-        version: 4.17.5
       '@types/node':
         specifier: 18.16.12
         version: 18.16.12
@@ -638,8 +632,8 @@ packages:
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
 
-  '@ferstack/generated@2.0.6':
-    resolution: {integrity: sha512-sXfFAjWlkqvcI5eMOhJ2IoOojjCp+TGk9a63Lv2sxILWCaAlGuxOSuN8gVaj0SGAWXEK9ndATiM8cS/jny7xiw==}
+  '@ferstack/generated@2.0.9':
+    resolution: {integrity: sha512-A4OUNpz3/PxuCMed1EDQZSP8JN/ca7N+KJcknSgdXCHhd68wI85Oi2sWDidgn/ki3pvVMpVeDck9mZw6g3iTGw==}
 
   '@graphql-codegen/add@5.0.3':
     resolution: {integrity: sha512-SxXPmramkth8XtBlAHu4H4jYcYXM/o3p01+psU+0NADQowA8jtYkK6MW5rV6T+CxkEaNZItfSmZRPgIuypcqnA==}
@@ -1018,9 +1012,6 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
-
-  '@types/lodash@4.17.5':
-    resolution: {integrity: sha512-MBIOHVZqVqgfro1euRDWX7OO0fBVUUMrN6Pwm8LQsz8cWhEpihlvR70ENj3f40j58TNxZaWv2ndSkInykNBBJw==}
 
   '@types/minimist@1.2.5':
     resolution: {integrity: sha512-hov8bUuiLiyFPGyFPE1lwWhmzYbirOXQNNo40+y3zow8aFVTeyn3VWL0VFFfdNddA8S4Vf0Tc062rzyNr7Paag==}
@@ -3807,7 +3798,7 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@ferstack/generated@2.0.6': {}
+  '@ferstack/generated@2.0.9': {}
 
   '@graphql-codegen/add@5.0.3(graphql@16.8.2)':
     dependencies:
@@ -4412,8 +4403,6 @@ snapshots:
   '@types/js-yaml@4.0.9': {}
 
   '@types/json-schema@7.0.15': {}
-
-  '@types/lodash@4.17.5': {}
 
   '@types/minimist@1.2.5': {}
 

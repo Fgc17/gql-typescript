@@ -9,8 +9,8 @@ import {
   StrictPartial,
   UnionToObject,
 } from "./types.js";
-import _ from "lodash";
 import { DocumentNode } from "graphql";
+import { capitalize } from "../utils.js";
 
 export type OperationType = keyof Operations;
 
@@ -87,14 +87,14 @@ export function gql<
     const variableDefinitions = Object.keys(operationConfig.variables)
       .map(
         (key) =>
-          `$${operationName}${_.capitalize(key)}: ${
+          `$${operationName}${capitalize(key)}: ${
             operationConfig.variables[key]
           }`
       )
       .join(", ");
 
     const variableAssignments = Object.keys(operationConfig.variables)
-      .map((key) => `${key}: $${operationName}${_.capitalize(key)}`)
+      .map((key) => `${key}: $${operationName}${capitalize(key)}`)
       .join(", ");
 
     return {
@@ -144,7 +144,7 @@ export function variables<
     const valueEntries = Object.entries(value);
 
     for (const [valueKey, valueValue] of valueEntries) {
-      acc[`${key}${_.capitalize(valueKey)}`] = valueValue;
+      acc[`${key}${capitalize(valueKey)}`] = valueValue;
     }
 
     return acc;

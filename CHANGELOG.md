@@ -1,5 +1,17 @@
 # @ferstack/gql-typescript
 
+## 0.6.0
+
+### Minor Changes
+
+- Removed lodash dependency, now compatible with edge runtime
+
+## 0.5.5
+
+### Patch Changes
+
+- update dependencies
+
 ## 0.5.4
 
 ### Patch Changes
