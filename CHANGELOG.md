@@ -1,5 +1,11 @@
 # @ferstack/gql-typescript
 
+## 0.6.1
+
+### Patch Changes
+
+- fix: wrong variables typing
+
 ## 0.6.0
 
 ### Minor Changes

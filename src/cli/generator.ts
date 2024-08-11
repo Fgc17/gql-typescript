@@ -1,7 +1,6 @@
 import {
   buildSchema,
   GraphQLSchema,
-  getNamedType as gqlGetNamedType,
   isNonNullType,
   isListType,
   isNamedType,
@@ -114,9 +113,7 @@ const getArgsType = (
 function extractVariables(field: GraphQLField<any, any, any>) {
   const variables = {} as any;
   field.args.forEach((arg) => {
-    variables[arg.name] = isNonNullType(arg.type)
-      ? `${gqlGetNamedType(arg.type).name}!`
-      : gqlGetNamedType(arg.type).name;
+    return (variables[arg.name] = arg.type.toString());
   });
   return variables;
 }
